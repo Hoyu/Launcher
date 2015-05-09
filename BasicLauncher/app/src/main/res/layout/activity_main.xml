@@ -20,7 +20,14 @@
             android:id="@+id/content"
             android:background="@color/black_transparent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:columnWidth="80dp"
+            android:numColumns="auto_fit"
+            android:verticalSpacing="30dp"
+            android:horizontalSpacing="10dp"
+            android:stretchMode="columnWidth"
+            android:gravity="bottom"
+            >
 
         </GridView>
     </SlidingDrawer>
