@@ -1,5 +1,7 @@
 package com.example.darkm_000.basiclauncher;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -37,10 +39,7 @@ public class MainActivity extends ActionBarActivity {
         //For drawing the grid layout with the applications of the system
         //Get the applications info in our array
         setPacks();
-        //initialize the DrawerAdapter with the info
-        drawerAdapter= new DrawerAdapter(this,packs);
-        //Then just let the adapter do his job on the GridView
-        grid.setAdapter(drawerAdapter);
+
 
     }
 
@@ -57,6 +56,23 @@ public class MainActivity extends ActionBarActivity {
             packs[i].icon=listPacks.get(i).loadIcon(packageManager);
             packs[i].name=listPacks.get(i).resolvePackageName;
             packs[i].label=listPacks.get(i).loadLabel(packageManager).toString();
+        }
+        //We can reorder the apps if we want :D
+
+        //initialize the DrawerAdapter with the info
+        drawerAdapter= new DrawerAdapter(this,packs);
+        //Then just let the adapter do his job on the GridView
+        grid.setAdapter(drawerAdapter);
+        //We need to make the icons launch the apps with an event. See GridClickListener
+        grid.setOnItemClickListener(new GridClickListener(this,packageManager,packs));
+    }
+
+    public class AppListener extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent arg1) {
+            // TODO Auto-generated method stub
+            setPacks();
         }
     }
 
