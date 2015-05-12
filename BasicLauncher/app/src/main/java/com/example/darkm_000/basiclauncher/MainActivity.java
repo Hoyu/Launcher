@@ -11,6 +11,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
+import android.widget.SlidingDrawer;
+
+import com.example.darkm_000.basiclauncher.events.GridLongClickListener;
 
 import java.util.List;
 
@@ -22,10 +26,16 @@ public class MainActivity extends ActionBarActivity {
         String name;
         String label;
     }
-
+    //Grid with all the apps
     GridView grid;
+    //Main screen/ user desktop
+    RelativeLayout home;
+    //the slide screen with the grid
+    SlidingDrawer drawer;
+    //We need an adapter to draw our screens
     DrawerAdapter drawerAdapter;
 
+    //With the packageManager we'll get the info of the system to our array of apps
     Pack [] packs;
     PackageManager packageManager;
 
@@ -36,6 +46,8 @@ public class MainActivity extends ActionBarActivity {
         packageManager=getPackageManager();
         //We get the GridView "content" that we created in the xml
         grid=(GridView) findViewById(R.id.content);
+        home=(RelativeLayout) findViewById(R.id.home);
+        drawer=(SlidingDrawer) findViewById(R.id.drawer);
         //For drawing the grid layout with the applications of the system
         //Get the applications info in our array
         setPacks();
@@ -65,6 +77,8 @@ public class MainActivity extends ActionBarActivity {
         grid.setAdapter(drawerAdapter);
         //We need to make the icons launch the apps with an event. See GridClickListener
         grid.setOnItemClickListener(new GridClickListener(this,packageManager,packs));
+        //Long click for putting the icons on home screen
+        grid.setOnItemLongClickListener(new GridLongClickListener(this, drawer, home));
     }
 
     public class AppListener extends BroadcastReceiver {
