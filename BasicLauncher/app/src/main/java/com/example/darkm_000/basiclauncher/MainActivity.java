@@ -1,6 +1,10 @@
 package com.example.darkm_000.basiclauncher;
 
+import android.app.Activity;
+import android.appwidget.AppWidgetHost;
+import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,12 +12,12 @@ import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.SlidingDrawer;
 
+import com.example.darkm_000.basiclauncher.events.GridClickListener;
 import com.example.darkm_000.basiclauncher.events.GridLongClickListener;
 
 import java.util.List;
@@ -21,11 +25,7 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
-    class Pack {
-        Drawable icon;
-        String name;
-        String label;
-    }
+
     //Grid with all the apps
     GridView grid;
     //Main screen/ user desktop
@@ -39,10 +39,17 @@ public class MainActivity extends ActionBarActivity {
     Pack [] packs;
     PackageManager packageManager;
 
+    //To get access to our activity info (SAVING CHANGES IN ACTIVITY)
+    static Activity activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //we save our main activity in activity (SAVING CHANGES IN ACTIVITY)
+        activity=this;
+
         packageManager=getPackageManager();
         //We get the GridView "content" that we created in the xml
         grid=(GridView) findViewById(R.id.content);
@@ -52,7 +59,11 @@ public class MainActivity extends ActionBarActivity {
         //Get the applications info in our array
         setPacks();
 
-
+        /*//Adding widgets
+        //As for apps, we need a manager to get the widgets info
+        widgetManager = AppWidgetManager.getInstance(this);
+        //We create the id.xml in values for creating a resource item of type id
+        widgetHost = new AppWidgetHost(this, R.id.APPWIDGET_HOST_ID);*/
     }
 
     public void setPacks(){
@@ -66,19 +77,21 @@ public class MainActivity extends ActionBarActivity {
         for (int i=0;i<listPacks.size();i++){
             packs[i]=new Pack();
             packs[i].icon=listPacks.get(i).loadIcon(packageManager);
-            packs[i].name=listPacks.get(i).resolvePackageName;
+            packs[i].packageName=listPacks.get(i).activityInfo.packageName;
+            packs[i].name=listPacks.get(i).activityInfo.name;
             packs[i].label=listPacks.get(i).loadLabel(packageManager).toString();
         }
         //We can reorder the apps if we want :D
 
         //initialize the DrawerAdapter with the info
-        drawerAdapter= new DrawerAdapter(this,packs);
+        drawerAdapter = new DrawerAdapter(this,packs);
         //Then just let the adapter do his job on the GridView
         grid.setAdapter(drawerAdapter);
         //We need to make the icons launch the apps with an event. See GridClickListener
-        grid.setOnItemClickListener(new GridClickListener(this,packageManager,packs));
+        grid.setOnItemClickListener(new GridClickListener(this, packageManager, packs));
         //Long click for putting the icons on home screen
-        grid.setOnItemLongClickListener(new GridLongClickListener(this, drawer, home));
+        grid.setOnItemLongClickListener(new GridLongClickListener(this, drawer, home, packs));
+
     }
 
     public class AppListener extends BroadcastReceiver {

@@ -25,9 +25,9 @@ public class DrawerAdapter extends BaseAdapter {
     }
 
     Context context;
-    MainActivity.Pack packs[];
+    Pack packs[];
 
-    public DrawerAdapter(Context context, MainActivity.Pack[] packs) {
+    public DrawerAdapter(Context context, Pack[] packs) {
         this.context = context;
         this.packs = packs;
     }

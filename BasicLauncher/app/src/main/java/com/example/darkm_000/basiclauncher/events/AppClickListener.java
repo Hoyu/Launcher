@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.View;
 
 import com.example.darkm_000.basiclauncher.MainActivity;
+import com.example.darkm_000.basiclauncher.Pack;
 
 /**
  * Created by darkm_000 on 13/05/2015.
@@ -13,9 +14,9 @@ import com.example.darkm_000.basiclauncher.MainActivity;
 public class AppClickListener implements View.OnClickListener {
 
     Context context;
-    MainActivity.Pack[] packs;
+    Pack[] packs;
 
-    public AppClickListener(Context context, MainActivity.Pack[] packs) {
+    public AppClickListener(Context context, Pack[] packs) {
         this.context = context;
         this.packs = packs;
     }

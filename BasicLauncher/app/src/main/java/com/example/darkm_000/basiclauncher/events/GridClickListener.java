@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.example.darkm_000.basiclauncher.MainActivity;
+import com.example.darkm_000.basiclauncher.Pack;
 
 /**
  * Created by darkm_000 on 11/05/2015.
@@ -16,9 +17,9 @@ public class GridClickListener implements AdapterView.OnItemClickListener {
 
     Context context;
     PackageManager packageManager;
-    MainActivity.Pack[] packs;
+    Pack[] packs;
 
-    public GridClickListener(Context context, PackageManager packageManager, MainActivity.Pack[] packs) {
+    public GridClickListener(Context context, PackageManager packageManager, Pack[] packs) {
         this.context = context;
         this.packageManager = packageManager;
         this.packs = packs;
